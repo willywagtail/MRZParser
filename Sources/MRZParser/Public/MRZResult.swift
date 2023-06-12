@@ -8,11 +8,11 @@
 import Foundation
 
 public enum MRZFormat: CaseIterable {
-    case td1, td2, td3
+    case td1, td1_be, td2, td3
 
     public var lineLength: Int {
         switch self {
-        case .td1:
+        case .td1, .td1_be:
             return 30
         case .td2:
             return 36
@@ -23,7 +23,7 @@ public enum MRZFormat: CaseIterable {
 
     public var linesCount: Int {
         switch self {
-        case .td1:
+        case .td1, .td1_be:
             return 3
         case .td2, .td3:
             return 2

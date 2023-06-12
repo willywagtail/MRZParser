@@ -65,6 +65,45 @@ struct MRZCodeFactory {
 
             let thirdLine = mrzLines[2]
             namesField = formatter.createNamesField(from: thirdLine, at: 0, length: 29)
+        case .td1_be:
+            documentNumberField = formatter.createStringValidatedField(
+                from: firstLine,
+                at: 5,
+                length: 13,
+                fieldType: .documentNumber
+            )
+            birthdateField = formatter.createDateValidatedField(
+                from: secondLine,
+                at: 0,
+                length: 6,
+                fieldType: .birthdate
+            )
+            sexField = formatter.createField(from: secondLine, at: 7, length: 1, fieldType: .sex)
+            expiryDateField = formatter.createDateValidatedField(
+                from: secondLine,
+                at: 8,
+                length: 6,
+                fieldType: .expiryDate
+            )
+            nationalityField = formatter.createField(from: secondLine, at: 15, length: 3, fieldType: .nationality)
+            optionalDataField = formatter.createStringValidatedField(
+                from: firstLine,
+                at: 15,
+                length: 15,
+                fieldType: .optionalData,
+                checkDigitFollows: false
+            )
+            optionalData2Field = formatter.createStringValidatedField(
+                from: secondLine,
+                at: 18,
+                length: 11,
+                fieldType: .optionalData,
+                checkDigitFollows: false
+            )
+            finalCheckDigit = formatter.createField(from: secondLine, at: 29, length: 1, fieldType: .hash).rawValue
+
+            let thirdLine = mrzLines[2]
+            namesField = formatter.createNamesField(from: thirdLine, at: 0, length: 29)
         case .td2, .td3:
             /// MRV-B and MRV-A types
             let isVisaDocument = firstLine.first == MRZResult.DocumentType.visa.identifier

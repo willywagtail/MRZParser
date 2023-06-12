@@ -65,8 +65,11 @@ public struct MRZParser {
         switch mrzLines.count {
         case MRZFormat.td2.linesCount,  MRZFormat.td3.linesCount:
             return [.td2, .td3].first(where: { $0.lineLength == uniformedLineLength(for: mrzLines) })
-        case MRZFormat.td1.linesCount:
-            return (uniformedLineLength(for: mrzLines) == MRZFormat.td1.lineLength) ? .td1 : nil
+        case MRZFormat.td1.linesCount, MRZFormat.td3.linesCount:
+            guard uniformedLineLength(for: mrzLines) == MRZFormat.td1.lineLength,
+                  let firstLine = mrzLines.first
+            else { return nil }
+            return firstLine[firstLine.index(firstLine.startIndex, offsetBy: 14)] == "<" ? .td1_be : .td1
         default:
             return nil
         }

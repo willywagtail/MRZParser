@@ -48,6 +48,31 @@ final class MRZParserTests: XCTestCase {
 
         XCTAssertEqual(parser.parse(mrzString: mrzString), result)
     }
+    
+    func testTD1_BE() {
+        let mrzString = """
+                        I<UTO592496659<1787<<<<<<<<<<<
+                        7408122F1204159UTO<<<<<<<<<<<6
+                        ERIKSSON<<ANNA<MARIA<<<<<<<<<<
+                        """
+        let result = MRZResult(
+            format: .td1_be,
+            documentType: .id,
+            documentTypeAdditional: nil,
+            countryCode: "UTO",
+            surnames: "ERIKSSON",
+            givenNames: "ANNA MARIA",
+            documentNumber: "592496659 178",
+            nationalityCountryCode: "UTO",
+            birthdate:  dateFormatter.date(from: "740812")!,
+            sex: .female,
+            expiryDate: dateFormatter.date(from: "120415")!,
+            optionalData: "1787",
+            optionalData2: ""
+        )
+
+        XCTAssertEqual(parser.parse(mrzString: mrzString), result)
+    }
 
     func testTD2() {
         let mrzString = """
